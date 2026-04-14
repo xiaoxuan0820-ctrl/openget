@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Android 构建
-  android-build:
-    name: Build Android APK
+  # Android Debug APK
+  android-debug:
+    name: Build Android Debug APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -37,14 +37,17 @@ jobs:
         run: |
           flutter pub get
 
-      - name: Build Android APK (Debug)
+      - name: Build Android Debug APK
         run: flutter build apk --debug
 
-      - name: Upload APK
+      - name: Rename APK
+        run: mv build/app/outputs/flutter-apk/app-debug.apk build/app/outputs/flutter-apk/openget-debug.apk
+
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: android-debug-apk
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          path: build/app/outputs/flutter-apk/openget-debug.apk
           retention-days: 7
 
   # iOS 构建 (macOS)
@@ -85,9 +88,9 @@ jobs:
           path: build/ios/iphonesimulator/Runner.app
           retention-days: 7
 
-  # Android Release 构建
-  android-release:
-    name: Build Android Release
+  # Android Release APK (可直接安装)
+  android-release-apk:
+    name: Build Android Release APK
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -115,22 +118,15 @@ jobs:
         run: |
           flutter pub get
 
-      - name: Build Android AAB
-        env:
-          KEYSTORE_FILE: keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          # 创建 keystore 文件
-          echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > keystore.jks
-          
-          # 构建 release 版本
-          flutter build appbundle --release
+      - name: Build Android Release APK
+        run: flutter build apk --release
 
-      - name: Upload AAB
+      - name: Rename APK
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/openget-release.apk
+
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-release-aab
-          path: build/app/outputs/bundle/release/app-release.aab
+          name: android-release-apk
+          path: build/app/outputs/flutter-apk/openget-release.apk
           retention-days: 30
