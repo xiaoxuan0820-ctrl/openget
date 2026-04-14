@@ -1,0 +1,34 @@
+workflows:
+  versioned:
+    name: OpenGet Flutter Workflow
+    environment:
+      flutter: 3.24.0
+      dart: 3.5.0
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Flutter analyze
+        script: |
+          flutter analyze
+    artifacts:
+      - build/app/outputs/**/*
+      - build/ios/iphoneos/Runner.app
+      - build/ios/iphonesimulator/Runner.app
+    android:
+      build:
+        debug:
+          enabled: true
+        release:
+          enabled: true
+          keystore:
+            enabled: true
+    ios:
+      xcode:
+        version: latest
+      simulator:
+        enabled: true
+      codeSigning:
+        automatic: true
