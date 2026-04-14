@@ -4,6 +4,7 @@
 
 ![OpenGet Logo](https://img.shields.io/badge/OpenGet-Prompt%20Optimizer-blue?style=for-the-badge)
 ![Flutter](https://img.shields.io/badge/Flutter-3.24.0-02569B?style=for-the-badge&logo=flutter)
+![Build Status](https://img.shields.io/github/actions/workflow/status/xiaoxuan0820-ctrl/openget/flutter-ci.yml?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 **一款智能提示词优化工具，帮助你将自然语言转换为更精准、专业的AI指令。**
